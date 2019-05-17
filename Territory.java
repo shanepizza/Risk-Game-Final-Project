@@ -1,17 +1,17 @@
 
 class Territory extends Object{
-	
-	
 	String ownership;
 	int unitCount;
 	String name;
-	
+
+//Constructor
 	Territory(String control, int count, String assignName){
 		ownership = control;
 		unitCount = count;
 		name = assignName;
 	}
-	
+
+//Setters and getters
 	public String getOwnership(){
 		return ownership;
 	}
@@ -33,4 +33,4 @@ class Territory extends Object{
 	
 	
 	
-}
+}//End Class
