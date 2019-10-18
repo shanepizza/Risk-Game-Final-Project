@@ -1,20 +1,10 @@
 import java.util.*;
 import javax.xml.transform.*;
 
-class Risk {
-	
-	Territory space1 = new Territory("Me", 3, "Place 1");
-	Territory space2 = new Territory("Not Me", 1, "Place 2");
-	Territory space3 = new Territory("Me", 1, "Place 3");
-	Territory space4 = new Territory("Me", 1, "Place 4");
-	Territory space5 = new Territory("Me", 1, "Place 5");
-	
-	Territory[] vertices = {space1, space2, space3, space4, space5};
-	int[][] edges = {{ 0, 1 }, {0, 3}, {0, 4},
-				{1, 2}, {1, 3},{2, 3}};
-				
-						
-	public void attackPlace(Territory o1, Territory o2){
+class Risk {	
+		
+			
+	public static void attackPlace(Territory o1, Territory o2){
 		Territory place1 = o1;
 		Territory place2 = o2;
 	
@@ -28,7 +18,7 @@ class Risk {
 				int attackDice = 1;
 				int defenceDice = 1;
 			//attack	
-				if(place1.getUnitCount() > 4){
+				if(place1.getUnitCount() > 3){
 					attackDice = 3;
 				}else if(place1.getUnitCount() == 3){
 					attackDice = 2;
@@ -38,23 +28,19 @@ class Risk {
 			//defence
 				if (place2.getUnitCount() > 1){
 					defenceDice = 2;
-				}//end unit if
+				}//end unit count if
 				
-			//Roll dice and stoor them in an ArrayList.
+			//Roll dice and stoor the results in an ArrayList.
 				ArrayList<Integer> atkDiceRoll = new ArrayList<Integer>();
 				ArrayList<Integer> defDiceRoll = new ArrayList<Integer>();
 				atkDiceRoll = rollDice(attackDice);
 				defDiceRoll = rollDice(defenceDice);
-				System.out.print(atkDiceRoll);
-				System.out.print(defDiceRoll);
-			
-			//get highest die
+				
+			//kill an army
 				Integer atkHigh = maxDie(atkDiceRoll);
 				Integer defHigh = maxDie(defDiceRoll);
-			
-			//kill an army
-				if(skirmish(atkHigh, defHigh) == true){
-					place2.setUnitCount(place2.getUnitCount() -1);
+				if(skirmish(atkHigh, defHigh) == true){		
+					place2.setUnitCount(place2.getUnitCount() -1);	
 				}else {
 					place1.setUnitCount(place1.getUnitCount() -1);
 				}//end if else
@@ -69,53 +55,57 @@ class Risk {
 						place1.setUnitCount(place1.getUnitCount() -1);
 					}//end if else
 				}//end if
-				
 			//if place two runs out of troops place1 wins. move units and change ownership.
 				if(place2.getUnitCount() == 0){
 					place2.setOwnership(place1.getOwnership());
 					place2.setUnitCount(place1.getUnitCount() -1);
 					place1.setUnitCount(1);
-				}
+				}//end if for control switch
+				
+			//checks to see what happened
+				System.out.print("Territory is owned by: " + place2.getOwnership() + "\n With " + place2.getUnitCount() + " troops. \n");
+				System.out.print("Place1 has " + place1.getUnitCount() + " armies. \n");
 				
 			//clear dice rolls
 				atkDiceRoll.removeAll(atkDiceRoll);
 				defDiceRoll.removeAll(defDiceRoll);
 				
-			}//end while loop
-		}//end ownership check
+			}//end while loop for place1 unit count check
+		}//end ownership check to see if attack can even happen.
 	}//end attack place method
 	
 	
-	//maxDie method
-		public int maxDie(ArrayList<Integer> o1){
-			int max = o1.get(0);
-			for(int i = 0; i < o1.size(); i++){
-				if(o1.get(i) > max){
-					max = o1.get(i);
-					o1.remove(i);
-				}//end if
-			}//end for
-			return max;
-		}//end method	
+//maxDie method
+	public static int maxDie(ArrayList<Integer> o1){
+		int max = o1.get(0);
+		for(int i = 0; i < o1.size(); i++){
+			if(o1.get(i) > max){
+				max = o1.get(i);
+				o1.remove(i);
+			}//end if
+		}//end for
+		return max;
+	}//end method	
 		
 		
-	//single battle method
-		public boolean skirmish(int o1, int o2){
-			if(o1 > o2){
-				return true;
-			}else{
-				return false;
-			}//end if/else
-		}//end method	
+//single battle method
+	public static boolean skirmish(int o1, int o2){
+		if(o1 > o2){
+			return true;
+		}else{
+			return false;
+		}//end if/else
+	}//end method	
 		
 		
-	//Rolldice method
-		public ArrayList<Integer> rollDice(int num){
-			ArrayList<Integer> result = new ArrayList<Integer>();
-			for(int x = 0; x < num; x++){
-				result.add((int) Math.random() * 6 +1);
-			}//end forloop
-			return result;
-		}//end method
-				
-}
+//Rolldice method
+	public static ArrayList<Integer> rollDice(int num){
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		for(int x = 0; x < num; x++){
+			double temp = Math.random() * 6 +1;
+			Integer temp2 = (int) temp;
+			result.add(temp2);
+		}//end forloop
+		return result;
+	}//end method		
+}//end Risk Class
